@@ -2,11 +2,9 @@ spell.exe: spellcheck.o hash.o
 	g++ -o spell.exe spellcheck.o hash.o
 
 spellcheck.o: spellcheck.cpp hash.h
-	mkdir build
 	g++ -c spellcheck.cpp 
 
 hash.o: hash.cpp hash.h
-	mkdir build
 	g++ -c hash.cpp 
 
 debug:
