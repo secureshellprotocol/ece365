@@ -11,7 +11,7 @@ class hashTable {
   // The constructor initializes the hash table.
   // Uses getPrime to choose a prime number at least as large as
   // the specified size for the initial size of the hash table.
-  hashTable(int size = 0);
+  hashTable(int size = 100000);
 
   // Insert the specified key into the hash table.
   // If an optional pointer is provided,
@@ -64,10 +64,10 @@ class hashTable {
   int capacity; // The current capacity of the hash table.
   int filled; // Number of occupied items in the table.
 
-  std::vector<hashItem> data; // The actual entries are here.
+  std::vector<hashItem> *data; // The actual entries are here.
 
   // The hash function.
-  int hash(const std::string &key);
+  unsigned int hash(const std::string &key);
 
   // Search for an item with the specified key.
   // Return the position if found, -1 otherwise.

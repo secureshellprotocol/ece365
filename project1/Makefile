@@ -1,14 +1,16 @@
-spell.exe: spellcheck.o hash.o
+spell.exe: build/spellcheck.o build/hash.o
 	g++ -o spell.exe spellcheck.o hash.o
 
 spellcheck.o: spellcheck.cpp hash.h
-	g++ -c spellcheck.cpp
+	mkdir build
+	g++ -c spellcheck.cpp 
 
 hash.o: hash.cpp hash.h
-	g++ -c hash.cpp
+	mkdir build
+	g++ -c hash.cpp 
 
 debug:
-	g++ -g -o spellDebug.exe spellcheck.cpp hash.cpp
+	g++ -g -o spellDebug.exe spellcheck.cpp hash.cpp -Wall -Wextra -Wpedantic
 
 clean:
 	rm -f *.exe *.o *.stackdump *~
