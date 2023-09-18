@@ -10,8 +10,11 @@ hash.o: hash.cpp hash.h
 debug:
 	g++ -g -o spellDebug.exe spellcheck.cpp hash.cpp -Wall -Wextra -Wpedantic
 
+export:
+	zip JR_Project1.zip *.cpp *.h Makefile
+
 clean:
-	rm -f *.exe *.o *.stackdump *~
+	rm -f *.exe *.o *.stackdump *~ JR_Project1.zip
 
 backup:
 	test -d backups || mkdir backups

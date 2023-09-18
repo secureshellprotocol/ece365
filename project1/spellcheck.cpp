@@ -6,37 +6,48 @@
 #include <algorithm>
 #include <cctype>
 
-
+// Takes word(s) and makes them all lowercase (clean)
 void clean(std::string &word){
-    //std::cout << word << std::endl;
     for(int i = 0; i < word.length(); i++){
         (word)[i] = std::tolower((word)[i]);
     }
-    //std::cout << word<< std::endl ;
+
     return;
 }
+char clean(char ch){
+    return std::tolower(ch);
+}
 
-//  clean the word before bringing here
+//  Checks if a word is valid according to the rules. 
+    //  no word over 20char
+    //  end with \n
+    //  words w/ digits ARE VALID, dont check them.
+    //  convert to lowercase
+    //  valid characters are 
+    //      letters (capital A – Z and lowercase a - z), 
+    //      digits (0 - 9), 
+    //      dashes (-), 
+    //      and apostrophes (').
+//  clean() the word before bringing here
 bool isValid(std::string &word){
-    if(word.length() > 20) return false;
+    if(word.length() > 19) return false;
     for( char ch : word ){
-        if((ch >= 97 || ch <= 122)) { continue; }
-        if((ch >= 48 || ch <= 57)) { continue; }
-        if(ch == 39) { continue; }
-        if(ch == 45) { continue; }
+        if((ch >= 'a' && ch <= 'z')) { continue; }
+        if((ch >= '0' && ch <= '9')) { continue; }
+        if(ch == '\'') { continue; }
+        if(ch == '-') { continue; }
 
         return false;
     }
     return true;
 
 }
-//  clean the word before bringing here
 bool isValid(char ch){
-    if((ch >= 'a' || ch <= 'z')) { return true; }
-    if((ch >= '0' || ch <= '9')) { return true; }
+    if((ch >= 'a') && (ch <= 'z')) { return true; }
+    if((ch >= '0') && (ch <= '9')) { return true; }
     if(ch == '\'') { return true; }
     if(ch == '-') { return true; }
-    
+
     return false;
 }
 
@@ -45,6 +56,7 @@ int makeDictionary(std::string &wordfilestring, hashTable *d){
     std::ifstream wordfile;
     wordfile.open(wordfilestring);
 
+    clock_t start = clock();
     //parse and form hash table
     while(std::getline(wordfile, line)){
         clean(line);
@@ -53,21 +65,31 @@ int makeDictionary(std::string &wordfilestring, hashTable *d){
                 case 0:
                     break;
                 case 1:
-                    std::cout << "Already Hashed" << std::endl;
+                    //  Already Hashed
                     break;
                 case 2:
-                    std::cout << "Malloc fail" << std::endl;
+                    //Malloc fail
                     break;
                 default:
-                    std::cout << "Insert: Unexpected Error Occured" << std::endl;
+                    //Unexpected Error Occured
                     break;
             }
         }
-        else{
-            std::cout << "bigsad" << std::endl;
-        }
+        //  else, not valid
     }
+    clock_t end = clock();
+    std::cout << "Total time (in seconds) to load dictionary: " + std::to_string((double)(end - start) / CLOCKS_PER_SEC) << std::endl;
     return 0;
+}
+
+//  checks if word is in hastTable dictionary d
+//  true - Word found
+//  false - Word not found
+bool spellcheck(std::string &word, hashTable *d){
+    if(!(d->contains(word))){
+        return false;
+    }
+    return true;
 }
 
 int main(){
@@ -75,10 +97,11 @@ int main(){
     hashTable *dict = new hashTable();
 
     std::string wordfilestring;
-
     std::cout << "Enter name of dictionary: ";
     std::cin >> wordfilestring;
     
+    makeDictionary(wordfilestring, dict);
+
     std::ifstream infile;
     std::string infilestring;
 
@@ -94,23 +117,54 @@ int main(){
     outfile.open(outfilestring);
 
     // da rules:
-    //  no word over 20char
-    //  end with \n
-    //  words w/ digits ARE VALID, dont check them.
-    //  convert to lowercase
-    //  valid characters are 
-    //      letters (capital A – Z and lowercase a - z), 
-    //      digits (0 - 9), 
-    //      dashes (-), 
-    //      and apostrophes (').
 
-    makeDictionary(wordfilestring, dict);
 
-    std::string line;
-    int lineno = 0;
-    while(std::getline(infile, line)){
-        lineno++;
+
+    clock_t start = clock();
+    std::string word;
+    int lineno = 1;
+    
+    char ch = clean(infile.get());
+    while(42){
+        if(ch == EOF) { break; }
+        bool digit = ((ch >= '0') && (ch <= '9'));
+
+        int length = 0;
+        while(isValid(ch)){
+            length++;
+            if(length > 20){ 
+                while(isValid(ch)){
+                    ch = clean(infile.get());
+                }
+                break; 
+            }
+            word.push_back(ch);
+            ch = clean(infile.get());
+            if(digit = ((ch >= '0') && (ch <= '9')) && digit == false) { digit = true; }
+        }
+        if(!digit) {
+            if(!(spellcheck(word, dict))){
+                if((length > 20)){
+                    outfile << "Long word at line "+ std::to_string(lineno) +", starts: "+ word << std::endl;
+                }
+                else{
+                    outfile << "Unknown word at line "+ std::to_string(lineno) +": "+ word << std::endl;
+                }
+            }
+            //std::cout << word << std::endl;
+        }
+
+        //work back
+        digit = false;
+        while(!isValid(ch)){
+            if(ch == '\n') { lineno++; }
+            if(ch == EOF) { break; }
+            ch = clean(infile.get());
+        }
+        word = "";
     }
+    clock_t end = clock();
+    std::cout << "Total time (in seconds) to check document: " + std::to_string((double)(end - start) / CLOCKS_PER_SEC) << std::endl;
 
     delete dict;
 

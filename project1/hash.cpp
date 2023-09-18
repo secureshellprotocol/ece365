@@ -103,12 +103,13 @@ int hashTable::findPos(const std::string &key){
     
     int i = 0;
     while(hashedKey+i < this->capacity){
-        //return if occupied
+        //return if not occupied
         if(!((*this->data)[hashedKey+i].isOccupied)) { return -1; }
         //return if deleted
         if(((*this->data)[hashedKey+i].isDeleted)) { return -1; } 
         //check if key matches
         if(key == (*this->data)[hashedKey+i].key){ return (hashedKey+i); }
+        i++;
     }
 
     return -1;
