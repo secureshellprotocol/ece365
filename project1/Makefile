@@ -1,4 +1,4 @@
-spell.exe: build/spellcheck.o build/hash.o
+spell.exe: spellcheck.o hash.o
 	g++ -o spell.exe spellcheck.o hash.o
 
 spellcheck.o: spellcheck.cpp hash.h
