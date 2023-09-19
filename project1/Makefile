@@ -14,7 +14,8 @@ export:
 	zip JR_Project1.zip *.cpp *.h Makefile
 
 clean:
-	rm -f *.exe *.o *.stackdump *~ JR_Project1.zip
+	rm -f *.exe *.o *.stackdump *~ JR_Project1.zip out
+	touch out
 
 backup:
 	test -d backups || mkdir backups

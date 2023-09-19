@@ -40,6 +40,7 @@ int hashTable::insert(const std::string &key, void *pv){
             return 1;
         }
         i++;
+	if (hashedKey+i == this->capacity) { hashedKey = i = 0; }
     }
 
     (*this->data)[hashedKey+i].key = key;
@@ -103,7 +104,8 @@ int hashTable::findPos(const std::string &key){
     
     int i = 0;
     while(hashedKey+i < this->capacity){
-        //return if not occupied
+        if((hashedKey+i) == this->capacity){ hashedKey = i = 0; } 
+	//return if not occupied
         if(!((*this->data)[hashedKey+i].isOccupied)) { return -1; }
         //return if deleted
         if(((*this->data)[hashedKey+i].isDeleted)) { return -1; } 
