@@ -65,13 +65,14 @@ int makeDictionary(std::string &wordfilestring, hashTable *d){
                 case 0:
                     break;
                 case 1:
-                    //  Already Hashed
+                    //  Already Hashed, not fatal
                     break;
                 case 2:
-                    //Malloc fail
-                    break;
+                    //	Malloc fail, fatal
+                    return -1;
+					break;
                 default:
-                    //Unexpected Error Occured
+                    //	Unexpected Error Occured
                     break;
             }
         }
@@ -116,10 +117,7 @@ int main(){
     std::cin >> outfilestring;
     outfile.open(outfilestring);
 
-    // da rules:
-
-
-
+	//https://stackoverflow.com/questions/20167685/measuring-cpu-time-in-c
     clock_t start = clock();
     std::string word;
     int lineno = 1;
@@ -140,18 +138,19 @@ int main(){
             }
             word.push_back(ch);
             ch = clean(infile.get());
-            if(digit = ((ch >= '0') && (ch <= '9')) && digit == false) { digit = true; }
+            if(digit == false && ((ch >= '0') && (ch <= '9'))) { digit = true; }
         }
-        if(!digit) {
+        
+		//analyze word, as long as theres no digits
+		if(!digit) {
             if(!(spellcheck(word, dict))){
                 if((length > 20)){
-                    outfile << "Long word at line "+ std::to_string(lineno) +", starts: "+ word << std::endl;
+                    outfile << "Long word at line " + std::to_string(lineno) + ", starts: "+ word << std::endl;
                 }
                 else{
-                    outfile << "Unknown word at line "+ std::to_string(lineno) +": "+ word << std::endl;
+                    outfile << "Unknown word at line " + std::to_string(lineno) + ": " + word << std::endl;
                 }
             }
-            //std::cout << word << std::endl;
         }
 
         //work back
