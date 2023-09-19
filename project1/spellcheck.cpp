@@ -87,7 +87,8 @@ int makeDictionary(std::string &wordfilestring, hashTable *d){
 //  true - Word found
 //  false - Word not found
 bool spellcheck(std::string &word, hashTable *d){
-    if(!(d->contains(word))){
+    clean(word);
+	if(!(d->contains(word))){
         return false;
     }
     return true;
