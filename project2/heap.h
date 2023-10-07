@@ -17,15 +17,15 @@ class heap{
 
 		int setKey(std::string &id, int key);
 
-		int remove(std::string &id, int key);
+		int remove(std::string &id, int *key);
 
-		int deletMin(std::string &id, int key);
+		int deleteMin(std::string *id, int *key);
 	private:
-		class node { //heap node
+		typedef struct node_t { //heap node
 			std::string id;	//this gets hashed	
 			int key;
 			void *pData;	
-		}
+		} node;
 
 		std::vector<node> *data;	//binary tree of nodes
 		hashTable map;				//map of id->node ptr
@@ -43,6 +43,6 @@ class heap{
 		
 		//get position of node in DATA VECTOR. NOT THE MAP.
 		int getPos(node *pn);
-}
+};
 
 #endif	//_HEAP_H
