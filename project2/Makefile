@@ -16,6 +16,9 @@ debug:
 export:
 	zip JR_Project2.zip *.cpp *.h Makefile
 
+test:
+	g++ -o test.exe main.cpp heap.cpp hash.cpp
+
 clean:
 	rm -f *.exe *.o *.stackdump *~ JR_Project2.zip out
 	touch out
