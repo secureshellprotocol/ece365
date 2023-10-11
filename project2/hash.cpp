@@ -131,7 +131,7 @@ int hashTable::findPos(const std::string &key){
     unsigned int hashedKey = this->hash(key);
     
     int i = 0;
-    while(hashedKey+i < this->capacity){
+    while(1){
         
 		//check if you reach the end of the table
 		if((hashedKey+i) == this->capacity) { hashedKey = i = 0; } 
