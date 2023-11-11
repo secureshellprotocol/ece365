@@ -75,7 +75,9 @@ int makeDictionary(std::string &wordfilestring, hashTable *d){
                     //	Unexpected Error Occured
                     break;
             }
+		std::cout << "hashed: " + line << std::endl;
         }
+
         //  else, not valid
     }
     clock_t end = clock();
@@ -87,7 +89,6 @@ int makeDictionary(std::string &wordfilestring, hashTable *d){
 //  true - Word found
 //  false - Word not found
 bool spellcheck(std::string &word, hashTable *d){
-    clean(word);
 	if(!(d->contains(word))){
         return false;
     }
