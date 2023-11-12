@@ -46,7 +46,7 @@ class heap{
 		//
 		// remove - delete the node with the specified id from the binary heap
 		//
-		// If pKey is supplied, write to that address the key of the node
+		// If key is supplied, write to that address the key of the node
 		// being deleted. If ppData is supplied, write to that address the
 		// associated void pointer.
 		//
@@ -60,8 +60,8 @@ class heap{
 		// deleteMin - return the data associated with the smallest key
 		//             and delete that node from the binary heap
 		//
-		// If pId is supplied (i.e., it is not nullptr), write to that address
-		// the id of the node being deleted. If pKey is supplied, write to
+		// If id is supplied (i.e., it is not nullptr), write to that address
+		// the id of the node being deleted. If key is supplied, write to
 		// that address the key of the node being deleted. If ppData is
 		// supplied, write to that address the associated void pointer.
 		//

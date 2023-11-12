@@ -66,17 +66,16 @@ bool hashTable::contains(const std::string &key){
 // set the bool to true if the key is in the hash table,
 // and set the bool to false otherwise.
 void *hashTable::getPointer(const std::string &key, bool *b){
-    
 	//check if key exists in table
 	if( this->contains(key) ) { 
 		//win!
 		//hashes key and fetches pv from data vector ptr
-		*b = true;
+		if(b != nullptr) { *b = true; }
 		return (*this->data)[findPos(key)].pv; 
 	}
 
 	//no key!
-	*b = false;
+	if(b != nullptr) { *b = false; }
 	return nullptr;
 }
 

@@ -1,12 +1,5 @@
 #include "graph.h"
+#include "hash.h"
+#include "heap.h"
+#include "dijkstra.h"
 
-
-int main(){
-	std::string filename;
-	cout << "Enter input file name: "
-	cin >> filename;
-
-	Graph amazeballs;
-	amazeballs.buildGraph(filename);
-	return;
-}

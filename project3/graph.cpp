@@ -8,73 +8,142 @@
 #include <sstream>
 #include <fstream>
 
+#include "graph.h"
+#include "hash.h"
 
+//		-------
+//		PRIVATE
+//		-------
 
-class Graph {
-private:
-	
-	//private vertice class
-	//	responsible for maintaining its edges + costs
-	//	Graph class will be responsible for maintaining the list of all of them
-	class Vertice {
-	private:
-		struct Edge {
-			std::string destination;
-			int cost;
-		};
+//	Vertex Construtor
+//		Single, named vertex with no associated edges.
+Graph::Vertex::Vertex(std::string &n){
+	name = n;
+	edgeCount = 0;
+}
 
-	public:
-		std::string name;
-		std::list<Edge> edges;
-
-		Vertice(std::string &n){
-			name = n;
-
-		}
-	};
-
-	list<Vertice> graph;
-
-	//Checks if a vertice is in graph
-	//	returns 1 for false
-	//	returns 0 for true
-	
-public:
-	Graph(int size){
-			
+//	Adds an edge to a vertex, with an associated cost
+//		0 on success
+//		1 if theres a vertex with the same name in the 
+//			edge list already 
+int Graph::Vertex::addEdge(Graph::Vertex &v, int c){
+	for (auto &temp_edge : edges){
+		if(temp_edge.destination == v.name) { return 1; }
 	}
 
-	//	Builds graph from specifed graph file
-	//	Handles the format:
-	//		<starting vertice name> <destination name> <cost>
-	void buildGraph(const std::string &filename) {
-		std::ifstream input(filename);
-		if(!input){
-			std::cerr << "Error: cannot access" << filename << std::endl;
-			exit(1);
-		}
-		
-		do {
-			std::string line;
-			std::getline(input, line);
-			std::stringstream ss(line);
+	edge e;
+	e.destination = v.name;
+	e.cost = c;
 
-			std::string start;
-			ss >> start;
+	edges.push_back(e);
+	edgeCount++;
 
-			std::string dest;
-			ss >> dest;
+	return 0;
+}
 
-			int size;
-			ss >> size;
 
-			std::cout << start << " " << dest << " " << size << '\n';
-			//see if starting vertice is in list
-			
-			//see if ending vertice is in list
-			//	if not, add it to the list	
 
-		} while (!input.eof());
-		
+//		------
+//		PUBLIC
+//		------
+
+Graph::Graph(){
+	verticeMap = new hashTable(100);
+	vertexCount = 0;
+}
+
+//	Builds graph from specifed graph file
+//	Handles the format:
+//		<starting vertice name> <destination name> <cost>
+void Graph::buildGraph(std::string &filename) {
+	std::ifstream input(filename);
+	if(!input){
+		std::cerr << "Error: cannot access" << filename << std::endl;
+		exit(1);
 	}
-};
+	
+	while(1) {
+		std::string line;
+		std::getline(input, line);
+		std::stringstream ss(line);
+		
+		//	Break Condition: nothing left to read
+		if(input.eof() || input.fail()){
+			break;
+		}
+
+		std::string focus_str;
+		ss >> focus_str;
+
+		std::string dest_str;
+		ss >> dest_str;
+
+		int cost;
+		ss >> cost;
+
+		std::cout << focus_str << " " << dest_str << " " << cost << '\n';
+		
+		//	Assemble verticies as specified
+		//	These will take care of bookkeeping
+		//		No duplicate vertices, hashmap maitenance
+		Vertex *focus = addVertex(focus_str);
+		Vertex *dest = addVertex(dest_str);
+		focus->addEdge(*dest, cost);
+	}
+	
+	//Debug
+	for(auto& v : v_buf){
+		v.printVertexInfo();
+	}
+
+}
+
+//	Getter for handling a vertice
+//	Just here to handle the static_cast from null* to Vertex*
+//		Returns ptr to Vertex if it exists in verticeMap
+//		Otherwise, returns nullptr
+Graph::Vertex *Graph::getVertex(std::string &name){
+	bool b;
+	Vertex *v = static_cast<Vertex *>(verticeMap->getPointer(name, &b));
+	if(b){
+		return v;
+	}
+	return nullptr;
+}
+
+//	Adds a vertex to verticeMap
+//	Stores vertex data in vertex buffer v_buf
+//		and a ptr to this data is put in verticeMap's record
+//	If a vertex with the same name already exists in verticeMap's records,
+//		nothing is done.
+Graph::Vertex *Graph::addVertex(std::string &name){
+	if(!withinGraph(name)){
+		//construct vertice
+		Vertex v = Vertex(name);
+	
+		v_buf.push_back(v);	
+		verticeMap->insert(name, &(v_buf.back()));
+		
+		vertexCount++;
+	}
+
+	return getVertex(name);
+}
+
+//	Detects whether or not a vertex has been "seen" yet by the graph
+//		true if detected
+//		false if not detected
+bool Graph::withinGraph(std::string &v){
+	return verticeMap->contains(v);
+}
+
+
+
+//	Prints out Vertex info.
+void Graph::Vertex::printVertexInfo(){
+	std::cout << name << ' '<< edgeCount << std::endl;
+	for(auto &e : edges){
+		std::cout << '\t' << e.destination << ' ' << e.cost << std::endl;
+	} 
+	return;
+}
