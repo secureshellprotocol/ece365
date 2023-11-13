@@ -52,9 +52,7 @@ int heap::insert(std::string &id, int key, void *pv){
 	//create map entry
 	data[currentSize].id = id;
 	data[currentSize].key = key;
-	if(pv != nullptr){
-		data[currentSize].pData = pv;
-	}
+	data[currentSize].pData = pv;
 	
 	map->insert(data[currentSize].id, &data[currentSize]);
 
@@ -183,7 +181,7 @@ int heap::deleteMin(std::string *id, int *key, void *ppData){
 		*key = data[1].key;
 	}
 	if(ppData != nullptr){
-		ppData = &(data[1].pData);
+		ppData = (data[1].pData);
 	}
 	return remove(data[1].id, key, ppData);
 }

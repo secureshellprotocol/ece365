@@ -127,7 +127,8 @@ void Graph::buildGraph(std::string &filename) {
 		Vertex *dest = addVertex(dest_str);
 		focus->addEdge(*dest, cost);
 	}
-	
+	input.close();
+	return;	
 }
 
 //	Runs Dijkstra's algorithm to determine the shortest path from
@@ -138,17 +139,16 @@ void Graph::runDijkstras(std::string &st){
 	focus->dist = 0;
 	focus->known = true;
 
-	heap unknownQueue = heap(vertexCount + 1);
+	heap unknownQueue = heap(vertexCount * 2);
 
 	int knownCount = 1;
 	while(knownCount < vertexCount){
 		//	Grab edges from known vertex
 		//	Each key is focus dist (dist from s), plus cost to get there
 		for(Vertex::edge &e : focus->edges){
-			e.destination->printVertexInfo();
 			if(e.destination->dist == -1 || e.destination->dist > e.cost + focus->dist){
 				e.destination->dist = e.cost + focus->dist;
-				e.destination->prev = focus;
+				e.destination->prev = getVertex(focus->name); //change to just focus later?
 			}
 			
 			unknownQueue.insert(e.destination->name,
@@ -156,40 +156,46 @@ void Graph::runDijkstras(std::string &st){
 								e.destination);
 		}
 		while(focus->known){
-			//BUG: Focus ptr not changing?
-			std::string fuck;
-			unknownQueue.deleteMin(&fuck, nullptr, nullptr);
-			focus = getVertex(fuck);
+			std::string id;
+			if(unknownQueue.deleteMin(&id, nullptr, nullptr)){
+				break; //queue is empty, theres no path
+			}
+			focus = getVertex(id);
 		}
 		focus->known = true;
 		knownCount++;
 	}
-print:
-
-//james notes
-//distances evaulate fine
-//deletemin not getting ptr????
-//prev ptr not setting????
-	//	Print output
-	for(auto &v : v_buf){ 
-		if(v.dist == -1 && !(v.known)){
-			std::cout << v.name << ": NO PATH\n";
-			continue;
-		}
-		
-		Vertex *p = v.prev;;
-		std::list<std::string> backtrack;
-		backtrack.push_front(v.name);
-		
-		std::cout << v.name << ": "<< v.dist <<" [";
-		while(p != nullptr){
-			backtrack.push_front(p->name);
-			p = p->prev;
-		}
-	}
 
 	return;
 }
+void Graph::writeOutVBuf(std::string outfile_str){
+	//	Print output
+	std::ofstream outfile;
+	outfile.open(outfile_str);
+	for(auto &v : v_buf){ 
+		if(v.dist == -1 && !(v.known)){
+			outfile << v.name << ": NO PATH\n";
+			continue;
+		}
+		
+		Vertex *p = v.prev;
+		
+		outfile << v.name << ": "<< v.dist <<" [";
+		std::string outbuf;
+		while(p != nullptr){
+			std::string temp = p->name + ", ";
+	
+			outbuf.insert(0, temp);
+
+			p = p->prev;
+		}
+		outfile << outbuf << v.name << "]\n";
+	}
+	outfile.close();
+
+	return;
+}
+
 
 //	Detects whether or not a vertex has been "seen" yet by the graph
 //		true if detected

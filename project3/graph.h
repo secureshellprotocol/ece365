@@ -77,12 +77,13 @@ public:
 	//	the graph. 
 	void buildGraph(std::string &filename);
 
+	void runDijkstras(std::string &st);
+
+	void writeOutVBuf(std::string outfile_str);
+	
 	//	Detects whether or not a vertex has been "seen" yet by the graph
 	//		true if detected
 	//		false if not detected
 	bool withinGraph(std::string &v);
-
-	void runDijkstras(std::string &st);
-
 };
 #endif //_GRAPH_H
