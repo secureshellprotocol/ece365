@@ -52,8 +52,10 @@ int heap::insert(std::string &id, int key, void *pv){
 	//create map entry
 	data[currentSize].id = id;
 	data[currentSize].key = key;
-	data[currentSize].pData = pv;
-
+	if(pv != nullptr){
+		data[currentSize].pData = pv;
+	}
+	
 	map->insert(data[currentSize].id, &data[currentSize]);
 
 	//percolate up from bottom
@@ -128,8 +130,12 @@ int heap::remove(std::string &id, int *key, void *ppData){
 	currentSize--; //heap is one smaller
 	
 	//clean map	
-	*key = rm->key;
-	ppData = map->getPointer(id, &retVal);
+	if(key != nullptr){
+		*key = rm->key;
+	}
+	if(ppData != nullptr){
+		ppData = rm->pData;
+	}
 	map->remove(id);
 
 	//sanity check -- not deleting a heap of size 1
@@ -170,9 +176,16 @@ int heap::remove(std::string &id, int *key, void *ppData){
 //   1 if the heap is empty
 //
 int heap::deleteMin(std::string *id, int *key, void *ppData){
-	*id = data[1].id;
-
-	return remove(*id, key, ppData);
+	if(id != nullptr){
+		*id = data[1].id;
+	}
+	if(key != nullptr){
+		*key = data[1].key;
+	}
+	if(ppData != nullptr){
+		ppData = &(data[1].pData);
+	}
+	return remove(data[1].id, key, ppData);
 }
 
 void heap::printHeap(){

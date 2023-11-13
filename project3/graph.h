@@ -2,7 +2,6 @@
 #define _GRAPH_H
 
 //	Library for parsing in data and returning a directed graph
-//	Mostly inspired from Prof. Sable's file import code for DSA1 P3
 
 #include <list>
 #include <string>
@@ -21,17 +20,20 @@ private:
 	//	the graph itself. Realistically, an edge should only be added when the 
 	//	Graph class invokes such an action.
 	class Vertex {
-	private:
+	public:
 		typedef struct edge_t {
-			std::string destination;
+			Vertex *destination;
 			int cost;
 		} edge;
 
-	public:
-		std::string name;
-		std::list<edge> edges;
 		int edgeCount = 0;
+		std::list<edge> edges;
+		std::string name;
+
+		//Dijkstra's routines
 		bool known = false;
+		Vertex *prev = nullptr;
+		int dist = -1;
 
 		Vertex(std::string &n);
 
@@ -40,7 +42,7 @@ private:
 		//		1 if theres a vertex with the same name in the 
 		//			edge list already
 		int addEdge(Vertex &v, int cost);
-		
+
 		//	Prints out Vertex info.
 		void printVertexInfo();
 	};
@@ -79,5 +81,8 @@ public:
 	//		true if detected
 	//		false if not detected
 	bool withinGraph(std::string &v);
+
+	void runDijkstras(std::string &st);
+
 };
 #endif //_GRAPH_H

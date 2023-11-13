@@ -1,5 +1,4 @@
 //	Library for parsing in data and returning a directed graph
-//	Mostly inspired from Prof. Sable's file import code for DSA1 P3
 
 #include <vector>
 #include <list>
@@ -10,6 +9,7 @@
 
 #include "graph.h"
 #include "hash.h"
+#include "heap.h"
 
 //		-------
 //		PRIVATE
@@ -28,11 +28,11 @@ Graph::Vertex::Vertex(std::string &n){
 //			edge list already 
 int Graph::Vertex::addEdge(Graph::Vertex &v, int c){
 	for (auto &temp_edge : edges){
-		if(temp_edge.destination == v.name) { return 1; }
+		if(temp_edge.destination->name == v.name) { return 1; }
 	}
 
 	edge e;
-	e.destination = v.name;
+	e.destination = &v;
 	e.cost = c;
 
 	edges.push_back(e);
@@ -41,7 +41,46 @@ int Graph::Vertex::addEdge(Graph::Vertex &v, int c){
 	return 0;
 }
 
+//	Prints out Vertex info.
+void Graph::Vertex::printVertexInfo(){
+	std::cout << name << ' '<< edgeCount << std::endl;
+	for(auto &e : edges){
+		std::cout << '\t' << e.destination->name << ' ' << e.cost << std::endl;
+	} 
+	return;
+}
 
+//	Getter for handling a vertice
+//	Just here to handle the static_cast from null* to Vertex*
+//		Returns ptr to Vertex if it exists in verticeMap
+//		Otherwise, returns nullptr
+Graph::Vertex *Graph::getVertex(std::string &name){
+	bool b;
+	Vertex *v = static_cast<Vertex *>(verticeMap->getPointer(name, &b));
+	if(b){
+		return v;
+	}
+	return nullptr;
+}
+
+//	Adds a vertex to verticeMap
+//	Stores vertex data in vertex buffer v_buf
+//		and a ptr to this data is put in verticeMap's record
+//	If a vertex with the same name already exists in verticeMap's records,
+//		nothing is done.
+Graph::Vertex *Graph::addVertex(std::string &name){
+	if(!withinGraph(name)){
+		//construct vertice
+		Vertex v = Vertex(name);
+	
+		v_buf.push_back(v);	
+		verticeMap->insert(name, &(v_buf.back()));
+		
+		vertexCount++;
+	}
+
+	return getVertex(name);
+}
 
 //		------
 //		PUBLIC
@@ -80,8 +119,6 @@ void Graph::buildGraph(std::string &filename) {
 
 		int cost;
 		ss >> cost;
-
-		std::cout << focus_str << " " << dest_str << " " << cost << '\n';
 		
 		//	Assemble verticies as specified
 		//	These will take care of bookkeeping
@@ -91,43 +128,67 @@ void Graph::buildGraph(std::string &filename) {
 		focus->addEdge(*dest, cost);
 	}
 	
-	//Debug
-	for(auto& v : v_buf){
-		v.printVertexInfo();
-	}
-
 }
 
-//	Getter for handling a vertice
-//	Just here to handle the static_cast from null* to Vertex*
-//		Returns ptr to Vertex if it exists in verticeMap
-//		Otherwise, returns nullptr
-Graph::Vertex *Graph::getVertex(std::string &name){
-	bool b;
-	Vertex *v = static_cast<Vertex *>(verticeMap->getPointer(name, &b));
-	if(b){
-		return v;
-	}
-	return nullptr;
-}
+//	Runs Dijkstra's algorithm to determine the shortest path from
+//	a given vertex, v.
+void Graph::runDijkstras(std::string &st){
+	//	Establish known vertex
+	Vertex *focus = getVertex(st);
+	focus->dist = 0;
+	focus->known = true;
 
-//	Adds a vertex to verticeMap
-//	Stores vertex data in vertex buffer v_buf
-//		and a ptr to this data is put in verticeMap's record
-//	If a vertex with the same name already exists in verticeMap's records,
-//		nothing is done.
-Graph::Vertex *Graph::addVertex(std::string &name){
-	if(!withinGraph(name)){
-		//construct vertice
-		Vertex v = Vertex(name);
-	
-		v_buf.push_back(v);	
-		verticeMap->insert(name, &(v_buf.back()));
+	heap unknownQueue = heap(vertexCount + 1);
+
+	int knownCount = 1;
+	while(knownCount < vertexCount){
+		//	Grab edges from known vertex
+		//	Each key is focus dist (dist from s), plus cost to get there
+		for(Vertex::edge &e : focus->edges){
+			e.destination->printVertexInfo();
+			if(e.destination->dist == -1 || e.destination->dist > e.cost + focus->dist){
+				e.destination->dist = e.cost + focus->dist;
+				e.destination->prev = focus;
+			}
+			
+			unknownQueue.insert(e.destination->name,
+								e.destination->dist,
+								e.destination);
+		}
+		while(focus->known){
+			//BUG: Focus ptr not changing?
+			std::string fuck;
+			unknownQueue.deleteMin(&fuck, nullptr, nullptr);
+			focus = getVertex(fuck);
+		}
+		focus->known = true;
+		knownCount++;
+	}
+print:
+
+//james notes
+//distances evaulate fine
+//deletemin not getting ptr????
+//prev ptr not setting????
+	//	Print output
+	for(auto &v : v_buf){ 
+		if(v.dist == -1 && !(v.known)){
+			std::cout << v.name << ": NO PATH\n";
+			continue;
+		}
 		
-		vertexCount++;
+		Vertex *p = v.prev;;
+		std::list<std::string> backtrack;
+		backtrack.push_front(v.name);
+		
+		std::cout << v.name << ": "<< v.dist <<" [";
+		while(p != nullptr){
+			backtrack.push_front(p->name);
+			p = p->prev;
+		}
 	}
 
-	return getVertex(name);
+	return;
 }
 
 //	Detects whether or not a vertex has been "seen" yet by the graph
@@ -135,15 +196,4 @@ Graph::Vertex *Graph::addVertex(std::string &name){
 //		false if not detected
 bool Graph::withinGraph(std::string &v){
 	return verticeMap->contains(v);
-}
-
-
-
-//	Prints out Vertex info.
-void Graph::Vertex::printVertexInfo(){
-	std::cout << name << ' '<< edgeCount << std::endl;
-	for(auto &e : edges){
-		std::cout << '\t' << e.destination << ' ' << e.cost << std::endl;
-	} 
-	return;
 }

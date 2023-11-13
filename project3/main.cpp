@@ -1,8 +1,6 @@
 #include "graph.h"
 #include "hash.h"
 #include "heap.h"
-#include "dijkstra.h"
-
 int main(){
 	std::string filename;
 	std::cout << "Enter input file name: ";
@@ -11,7 +9,8 @@ int main(){
 	Graph amazeballs = Graph();
 	amazeballs.buildGraph(filename);
 	
-		
+	std::string focusVertex = "v1";
+	amazeballs.runDijkstras(focusVertex);	
 
 	return 0;
 }
