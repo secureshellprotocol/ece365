@@ -17,7 +17,7 @@ hash.o: hash.cpp hash.h
 hard: clean dijkstra.exe
 
 debug:
-	g++ -g -o dijkstraDebug.exe main.cpp heap.cpp hash.cpp graph.cpp
+	g++ -ggdb3 -Wall -o dijkstraDebug.exe main.cpp heap.cpp hash.cpp graph.cpp
 
 export: clean
 	zip JR_Project3.zip *.cpp *.h Makefile

@@ -1,0 +1,222 @@
+==3014544== Memcheck, a memory error detector
+==3014544== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==3014544== Using Valgrind-3.21.0-d97fed7c3e-20230428 and LibVEX; rerun with -h for copyright info
+==3014544== Command: ./dijkstraDebug.exe
+==3014544== Parent PID: 3008890
+==3014544== 
+--3014544-- 
+--3014544-- Valgrind options:
+--3014544--    --leak-check=full
+--3014544--    --show-leak-kinds=all
+--3014544--    --track-origins=yes
+--3014544--    --verbose
+--3014544--    --log-file=valgrind-out.txt
+--3014544-- Contents of /proc/version:
+--3014544--   Linux version 6.5.5-100.fc37.x86_64 (mockbuild@bkernel02.iad2.fedoraproject.org) (gcc (GCC) 12.3.1 20230508 (Red Hat 12.3.1-1), GNU ld version 2.38-27.fc37) #1 SMP PREEMPT_DYNAMIC Sat Sep 23 22:53:27 UTC 2023
+--3014544-- 
+--3014544-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand
+--3014544-- Page sizes: currently 4096, max supported 4096
+--3014544-- Valgrind library directory: /usr/libexec/valgrind
+--3014544-- Reading syms from /home/james/Cooper/ECE365/ece365/project3/dijkstraDebug.exe
+--3014544-- Reading syms from /usr/lib64/ld-linux-x86-64.so.2
+--3014544-- Warning: cross-CU LIMITATION: some inlined fn names
+--3014544-- might be shown as UnknownInlinedFun
+--3014544-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+==3014544== Downloading debug info for /usr/libexec/valgrind/memcheck-amd64-linux...
+--3014544--   Considering /home/james/.cache/debuginfod_client/e930547a2b4cf41e4c8c512782c934212ac61c93/debuginfo ..
+--3014544--   .. CRC is valid
+==3014544== Successfully downloaded debug file for /usr/libexec/valgrind/memcheck-amd64-linux
+==3014544== Downloading debug info for /home/james/.cache/debuginfod_client/e930547a2b4cf41e4c8c512782c934212ac61c93/debuginfo...
+--3014544--   Considering /home/james/.cache/debuginfod_client/95be4ccded553c95d60fd78542bc878ba0d5628d/debuginfo ..
+--3014544--   .. build-id is valid
+==3014544== Successfully downloaded debug file for /home/james/.cache/debuginfod_client/e930547a2b4cf41e4c8c512782c934212ac61c93/debuginfo
+--3014544--    object doesn't have a dynamic symbol table
+--3014544-- Scheduler: using generic scheduler lock implementation.
+--3014544-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==3014544== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-3014544-by-james-on-kurwa
+==3014544== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-3014544-by-james-on-kurwa
+==3014544== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-3014544-by-james-on-kurwa
+==3014544== 
+==3014544== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==3014544== don't want to do, unless you know exactly what you're doing,
+==3014544== or are doing some strange experiment):
+==3014544==   /usr/libexec/valgrind/../../bin/vgdb --pid=3014544 ...command...
+==3014544== 
+==3014544== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==3014544==   /path/to/gdb ./dijkstraDebug.exe
+==3014544== and then give GDB the following command
+==3014544==   target remote | /usr/libexec/valgrind/../../bin/vgdb --pid=3014544
+==3014544== --pid is optional if only one valgrind process is running
+==3014544== 
+--3014544-- REDIR: 0x4024850 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c1902 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--3014544-- REDIR: 0x4023000 (ld-linux-x86-64.so.2:index) redirected to 0x580c191c (vgPlain_amd64_linux_REDIR_FOR_index)
+--3014544-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--3014544-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+==3014544== WARNING: new redirection conflicts with existing -- ignoring it
+--3014544--     old: 0x04024850 (strlen              ) R-> (0000.0) 0x580c1902 vgPlain_amd64_linux_REDIR_FOR_strlen
+--3014544--     new: 0x04024850 (strlen              ) R-> (2007.0) 0x04848d60 strlen
+--3014544-- REDIR: 0x4023230 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4849d40 (strcmp)
+--3014544-- REDIR: 0x4022450 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x484d310 (mempcpy)
+--3014544-- Reading syms from /usr/lib64/libstdc++.so.6.0.30
+==3014544== Downloading debug info for /usr/lib64/libstdc++.so.6.0.30...
+--3014544--   Considering /home/james/.cache/debuginfod_client/63d457fa92d2f36950740c13d70c9a1d1786aaf6/debuginfo ..
+--3014544--   .. CRC is valid
+==3014544== Successfully downloaded debug file for /usr/lib64/libstdc++.so.6.0.30
+==3014544== Downloading debug info for /home/james/.cache/debuginfod_client/63d457fa92d2f36950740c13d70c9a1d1786aaf6/debuginfo...
+--3014544--   Considering /home/james/.cache/debuginfod_client/a70c59a2860c1047f623211948e8cde35c190abb/debuginfo ..
+--3014544--   .. build-id is valid
+==3014544== Successfully downloaded debug file for /home/james/.cache/debuginfod_client/63d457fa92d2f36950740c13d70c9a1d1786aaf6/debuginfo
+--3014544-- Reading syms from /usr/lib64/libm.so.6
+==3014544== Downloading debug info for /usr/lib64/libm.so.6...
+--3014544--   Considering /home/james/.cache/debuginfod_client/c992c40eb3e3a4c23e4ac691cf4cf00cdd2ec723/debuginfo ..
+--3014544--   .. CRC is valid
+==3014544== Successfully downloaded debug file for /usr/lib64/libm.so.6
+--3014544-- Reading syms from /usr/lib64/libgcc_s-12-20230508.so.1
+==3014544== Downloading debug info for /usr/lib64/libgcc_s-12-20230508.so.1...
+--3014544--   Considering /home/james/.cache/debuginfod_client/6baf7a1f1451ec21c7a598b1ea165a2d563edb07/debuginfo ..
+--3014544--   .. CRC is valid
+==3014544== Successfully downloaded debug file for /usr/lib64/libgcc_s-12-20230508.so.1
+==3014544== Downloading debug info for /home/james/.cache/debuginfod_client/6baf7a1f1451ec21c7a598b1ea165a2d563edb07/debuginfo...
+--3014544--   Considering /home/james/.cache/debuginfod_client/a70c59a2860c1047f623211948e8cde35c190abb/debuginfo ..
+--3014544--   .. build-id is valid
+==3014544== Successfully downloaded debug file for /home/james/.cache/debuginfod_client/6baf7a1f1451ec21c7a598b1ea165a2d563edb07/debuginfo
+--3014544-- Reading syms from /usr/lib64/libc.so.6
+==3014544== Downloading debug info for /usr/lib64/libc.so.6...
+--3014544--   Considering /home/james/.cache/debuginfod_client/62e480077b918f2669c2e530809daa8fc6ebf73f/debuginfo ..
+--3014544--   .. CRC is valid
+==3014544== Successfully downloaded debug file for /usr/lib64/libc.so.6
+==3014544== Downloading debug info for /home/james/.cache/debuginfod_client/62e480077b918f2669c2e530809daa8fc6ebf73f/debuginfo...
+--3014544--   Considering /home/james/.cache/debuginfod_client/4b97fbbb0d21f649ba5758909fad07a8dd4b6a80/debuginfo ..
+--3014544--   .. build-id is valid
+==3014544== Successfully downloaded debug file for /home/james/.cache/debuginfod_client/62e480077b918f2669c2e530809daa8fc6ebf73f/debuginfo
+==3014544== WARNING: new redirection conflicts with existing -- ignoring it
+--3014544--     old: 0x04c4baa0 (memalign            ) R-> (1011.0) 0x04847bda memalign
+--3014544--     new: 0x04c4baa0 (memalign            ) R-> (1017.0) 0x048480ce aligned_alloc
+==3014544== WARNING: new redirection conflicts with existing -- ignoring it
+--3014544--     old: 0x04c4baa0 (memalign            ) R-> (1011.0) 0x04847bda memalign
+--3014544--     new: 0x04c4baa0 (memalign            ) R-> (1017.0) 0x04848058 aligned_alloc
+==3014544== WARNING: new redirection conflicts with existing -- ignoring it
+--3014544--     old: 0x04c4baa0 (memalign            ) R-> (1011.0) 0x04847bda memalign
+--3014544--     new: 0x04c4baa0 (memalign            ) R-> (1017.0) 0x048480ce aligned_alloc
+==3014544== WARNING: new redirection conflicts with existing -- ignoring it
+--3014544--     old: 0x04c4baa0 (memalign            ) R-> (1011.0) 0x04847bda memalign
+--3014544--     new: 0x04c4baa0 (memalign            ) R-> (1017.0) 0x04848058 aligned_alloc
+--3014544-- REDIR: 0x40249f0 (ld-linux-x86-64.so.2:strncmp) redirected to 0x4849570 (strncmp)
+--3014544-- REDIR: 0x4c51c00 (libc.so.6:strnlen) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c51c90 (libc.so.6:strpbrk) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4fd40 (libc.so.6:strcmp) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c64eb0 (libc.so.6:wcsnlen) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4ee60 (libc.so.6:memset) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c63730 (libc.so.6:wcslen) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4e450 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c63540 (libc.so.6:wcschr) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4fc30 (libc.so.6:index) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c51cc0 (libc.so.6:rindex) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c635d0 (libc.so.6:wcscmp) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4f0b0 (libc.so.6:stpncpy) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c63b80 (libc.so.6:wmemchr) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c51aa0 (libc.so.6:strncmp) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4f120 (libc.so.6:strcasecmp) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c50fb0 (libc.so.6:strcspn) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c63660 (libc.so.6:wcscpy) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4fbb0 (libc.so.6:strcat) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c51990 (libc.so.6:strncasecmp_l) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4e350 (libc.so.6:bcmp) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4edd0 (libc.so.6:memrchr) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4fcb0 (libc.so.6:strchrnul) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c50f30 (libc.so.6:strcpy) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4f1c0 (libc.so.6:strcasecmp_l) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c51860 (libc.so.6:strlen) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c51b40 (libc.so.6:strncpy) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c63c10 (libc.so.6:wmemcmp) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4f030 (libc.so.6:stpcpy) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4eb90 (libc.so.6:memmove) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+==3014544== Preferring higher priority redirection:
+--3014544--     old: 0x04d02900 (__memcpy_avx_unalign) R-> (2018.0) 0x0484adc0 __memcpy_avx_unaligned_erms
+--3014544--     new: 0x04d02900 (__memcpy_avx_unalign) R-> (2018.1) 0x0484c410 memmove
+--3014544-- REDIR: 0x4c4e2c0 (libc.so.6:memchr) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c51e80 (libc.so.6:strspn) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4ecb0 (libc.so.6:mempcpy) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c518f0 (libc.so.6:strncasecmp) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c4ef60 (libc.so.6:rawmemchr) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4c52620 (libc.so.6:strstr) redirected to 0x48371ea (_vgnU_ifunc_wrapper)
+--3014544-- REDIR: 0x4d089f0 (libc.so.6:__strrchr_avx2) redirected to 0x4848740 (rindex)
+--3014544-- REDIR: 0x4c4adc0 (libc.so.6:malloc) redirected to 0x48427b9 (malloc)
+--3014544-- REDIR: 0x4d060a0 (libc.so.6:__strlen_avx2) redirected to 0x4848c40 (strlen)
+--3014544-- REDIR: 0x4d021a0 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x484bbc0 (bcmp)
+--3014544-- REDIR: 0x4928bb0 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4842f43 (operator new(unsigned long))
+--3014544-- REDIR: 0x4d02900 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x484c410 (memmove)
+--3014544-- REDIR: 0x4d05380 (libc.so.6:__strchr_avx2) redirected to 0x4848920 (index)
+--3014544-- REDIR: 0x4928c10 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x4844281 (operator new[](unsigned long))
+--3014544-- REDIR: 0x4d01f00 (libc.so.6:__memchr_avx2) redirected to 0x4849dc0 (memchr)
+--3014544-- REDIR: 0x4926f30 (libstdc++.so.6:operator delete[](void*)) redirected to 0x48468b1 (operator delete[](void*))
+--3014544-- REDIR: 0x4c4b360 (libc.so.6:free) redirected to 0x484523a (free)
+--3014544-- REDIR: 0x4d028c0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x484cf10 (mempcpy)
+--3014544-- REDIR: 0x4926f10 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x4845a5a (operator delete(void*, unsigned long))
+--3014544-- REDIR: 0x4d055c0 (libc.so.6:__strchrnul_avx2) redirected to 0x484ce00 (strchrnul)
+--3014544-- REDIR: 0x4926f00 (libstdc++.so.6:operator delete(void*)) redirected to 0x48457bf (operator delete(void*))
+==3014544== 
+==3014544== HEAP SUMMARY:
+==3014544==     in use at exit: 11,888 bytes in 6 blocks
+==3014544==   total heap usage: 34 allocs, 28 frees, 105,831 bytes allocated
+==3014544== 
+==3014544== Searching for pointers to 6 not-freed blocks
+==3014544== Checked 122,368 bytes
+==3014544== 
+==3014544== 24 bytes in 1 blocks are indirectly lost in loss record 1 of 6
+==3014544==    at 0x4842FB5: operator new(unsigned long) (vg_replace_malloc.c:472)
+==3014544==    by 0x405906: hashTable::hashTable(int) (hash.cpp:12)
+==3014544==    by 0x407225: Graph::Graph() (graph.cpp:90)
+==3014544==    by 0x40357C: main (main.cpp:10)
+==3014544== 
+==3014544== 24 bytes in 1 blocks are indirectly lost in loss record 2 of 6
+==3014544==    at 0x4842FB5: operator new(unsigned long) (vg_replace_malloc.c:472)
+==3014544==    by 0x405906: hashTable::hashTable(int) (hash.cpp:12)
+==3014544==    by 0x4040A5: heap::heap(int) (heap.cpp:15)
+==3014544==    by 0x4075A2: Graph::runDijkstras(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (graph.cpp:142)
+==3014544==    by 0x4035E6: main (main.cpp:18)
+==3014544== 
+==3014544== 2,544 bytes in 1 blocks are indirectly lost in loss record 3 of 6
+==3014544==    at 0x4842FB5: operator new(unsigned long) (vg_replace_malloc.c:472)
+==3014544==    by 0x406D4A: std::__new_allocator<hashTable::hashItem>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==3014544==    by 0x406BD1: std::allocator_traits<std::allocator<hashTable::hashItem> >::allocate(std::allocator<hashTable::hashItem>&, unsigned long) (alloc_traits.h:464)
+==3014544==    by 0x406AF5: std::_Vector_base<hashTable::hashItem, std::allocator<hashTable::hashItem> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==3014544==    by 0x406990: std::_Vector_base<hashTable::hashItem, std::allocator<hashTable::hashItem> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==3014544==    by 0x4067A0: std::_Vector_base<hashTable::hashItem, std::allocator<hashTable::hashItem> >::_Vector_base(unsigned long, std::allocator<hashTable::hashItem> const&) (stl_vector.h:332)
+==3014544==    by 0x4063F6: std::vector<hashTable::hashItem, std::allocator<hashTable::hashItem> >::vector(unsigned long, std::allocator<hashTable::hashItem> const&) (stl_vector.h:552)
+==3014544==    by 0x40592F: hashTable::hashTable(int) (hash.cpp:12)
+==3014544==    by 0x4040A5: heap::heap(int) (heap.cpp:15)
+==3014544==    by 0x4075A2: Graph::runDijkstras(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (graph.cpp:142)
+==3014544==    by 0x4035E6: main (main.cpp:18)
+==3014544== 
+==3014544== 2,584 (16 direct, 2,568 indirect) bytes in 1 blocks are definitely lost in loss record 4 of 6
+==3014544==    at 0x4842FB5: operator new(unsigned long) (vg_replace_malloc.c:472)
+==3014544==    by 0x40408D: heap::heap(int) (heap.cpp:15)
+==3014544==    by 0x4075A2: Graph::runDijkstras(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (graph.cpp:142)
+==3014544==    by 0x4035E6: main (main.cpp:18)
+==3014544== 
+==3014544== 9,264 bytes in 1 blocks are indirectly lost in loss record 5 of 6
+==3014544==    at 0x4842FB5: operator new(unsigned long) (vg_replace_malloc.c:472)
+==3014544==    by 0x406D4A: std::__new_allocator<hashTable::hashItem>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==3014544==    by 0x406BD1: std::allocator_traits<std::allocator<hashTable::hashItem> >::allocate(std::allocator<hashTable::hashItem>&, unsigned long) (alloc_traits.h:464)
+==3014544==    by 0x406AF5: std::_Vector_base<hashTable::hashItem, std::allocator<hashTable::hashItem> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==3014544==    by 0x406990: std::_Vector_base<hashTable::hashItem, std::allocator<hashTable::hashItem> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==3014544==    by 0x4067A0: std::_Vector_base<hashTable::hashItem, std::allocator<hashTable::hashItem> >::_Vector_base(unsigned long, std::allocator<hashTable::hashItem> const&) (stl_vector.h:332)
+==3014544==    by 0x4063F6: std::vector<hashTable::hashItem, std::allocator<hashTable::hashItem> >::vector(unsigned long, std::allocator<hashTable::hashItem> const&) (stl_vector.h:552)
+==3014544==    by 0x40592F: hashTable::hashTable(int) (hash.cpp:12)
+==3014544==    by 0x407225: Graph::Graph() (graph.cpp:90)
+==3014544==    by 0x40357C: main (main.cpp:10)
+==3014544== 
+==3014544== 9,304 (16 direct, 9,288 indirect) bytes in 1 blocks are definitely lost in loss record 6 of 6
+==3014544==    at 0x4842FB5: operator new(unsigned long) (vg_replace_malloc.c:472)
+==3014544==    by 0x40720F: Graph::Graph() (graph.cpp:90)
+==3014544==    by 0x40357C: main (main.cpp:10)
+==3014544== 
+==3014544== LEAK SUMMARY:
+==3014544==    definitely lost: 32 bytes in 2 blocks
+==3014544==    indirectly lost: 11,856 bytes in 4 blocks
+==3014544==      possibly lost: 0 bytes in 0 blocks
+==3014544==    still reachable: 0 bytes in 0 blocks
+==3014544==         suppressed: 0 bytes in 0 blocks
+==3014544== 
+==3014544== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)

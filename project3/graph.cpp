@@ -135,6 +135,7 @@ void Graph::buildGraph(std::string &filename) {
 //	a given vertex, v.
 void Graph::runDijkstras(std::string &st){
 	//	Establish known vertex
+	//Vertex *focus = getVertex(st);
 	Vertex *focus = getVertex(st);
 	focus->dist = 0;
 	focus->known = true;
@@ -151,15 +152,19 @@ void Graph::runDijkstras(std::string &st){
 				e.destination->prev = focus; //change to just focus later?
 			}
 			
+			//	Put edges into binary heap	
 			unknownQueue.insert(e.destination->name,
 								e.destination->dist,
-								e.destination);
+								static_cast<void *>(e.destination));
 		}
+		
 		while(focus->known){
 			//std::string id;
+			//	Grab lowest cost edge
 			if(unknownQueue.deleteMin(nullptr, nullptr, focus)){
 				break; //queue is empty, theres no path
 			}
+			focus = static_cast<Vertex *>(focus);
 			//focus = getVertex(id);
 		}
 		focus->known = true;

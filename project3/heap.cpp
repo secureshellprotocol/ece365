@@ -181,9 +181,10 @@ int heap::deleteMin(std::string *id, int *key, void *ppData){
 		*key = data[1].key;
 	}
 	if(ppData != nullptr){
-		ppData = (data[1].pData);
+		ppData = &(data[1].pData);
 	}
-	return remove(data[1].id, key, ppData);
+	
+	return remove(data[1].id, nullptr, nullptr);
 }
 
 void heap::printHeap(){
