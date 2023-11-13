@@ -111,6 +111,12 @@ void Graph::buildGraph(std::string &filename) {
 			break;
 		}
 
+		//	Grab:	focus/source
+		//			destination
+		//			cost to get there
+		//		and form a vertex (if source dne) with
+		//		an edge to the dest vertex (if destination dne
+		//		and edge to destination dne)
 		std::string focus_str;
 		ss >> focus_str;
 
@@ -122,7 +128,7 @@ void Graph::buildGraph(std::string &filename) {
 		
 		//	Assemble verticies as specified
 		//	These will take care of bookkeeping
-		//		No duplicate vertices, hashmap maitenance
+		//		No duplicate vertices, and does hashmap maitenance
 		Vertex *focus = addVertex(focus_str);
 		Vertex *dest = addVertex(dest_str);
 		focus->addEdge(*dest, cost);
@@ -148,13 +154,17 @@ void Graph::runDijkstras(std::string &st){
 		for(Vertex::edge &e : focus->edges){
 			if(e.destination->dist == -1 || e.destination->dist > e.cost + focus->dist){
 				e.destination->dist = e.cost + focus->dist;
-				e.destination->prev = getVertex(focus->name); //change to just focus later?
+				e.destination->prev = getVertex(focus->name);
 			}
 			
+			//	Insert all edges from focus
+			//	into unknownQueue
 			unknownQueue.insert(e.destination->name,
 								e.destination->dist,
 								e.destination);
 		}
+		//	From unknownQueue, grabs the next dest
+		//	with the lowest attached dist.
 		while(focus->known){
 			std::string id;
 			if(unknownQueue.deleteMin(&id, nullptr, nullptr)){
@@ -162,6 +172,7 @@ void Graph::runDijkstras(std::string &st){
 			}
 			focus = getVertex(id);
 		}
+		//	This next dest becomes known.
 		focus->known = true;
 		knownCount++;
 	}
@@ -172,6 +183,7 @@ void Graph::writeOutVBuf(std::string outfile_str){
 	//	Print output
 	std::ofstream outfile;
 	outfile.open(outfile_str);
+
 	for(auto &v : v_buf){ 
 		if(v.dist == -1 && !(v.known)){
 			outfile << v.name << ": NO PATH\n";
@@ -182,6 +194,7 @@ void Graph::writeOutVBuf(std::string outfile_str){
 		
 		outfile << v.name << ": "<< v.dist <<" [";
 		std::string outbuf;
+		//	Iterate through prev's
 		while(p != nullptr){
 			std::string temp = p->name + ", ";
 	
