@@ -148,7 +148,7 @@ void Graph::runDijkstras(std::string &st){
 		for(Vertex::edge &e : focus->edges){
 			if(e.destination->dist == -1 || e.destination->dist > e.cost + focus->dist){
 				e.destination->dist = e.cost + focus->dist;
-				e.destination->prev = getVertex(focus->name); //change to just focus later?
+				e.destination->prev = focus; //change to just focus later?
 			}
 			
 			unknownQueue.insert(e.destination->name,
@@ -156,11 +156,11 @@ void Graph::runDijkstras(std::string &st){
 								e.destination);
 		}
 		while(focus->known){
-			std::string id;
-			if(unknownQueue.deleteMin(&id, nullptr, nullptr)){
+			//std::string id;
+			if(unknownQueue.deleteMin(nullptr, nullptr, focus)){
 				break; //queue is empty, theres no path
 			}
-			focus = getVertex(id);
+			//focus = getVertex(id);
 		}
 		focus->known = true;
 		knownCount++;
