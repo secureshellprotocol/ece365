@@ -1,5 +1,4 @@
 dijkstra.exe: main.o heap.o hash.o graph.o
-	echo todo update graph.h to match graph.cpp commenst	
 	g++ -o dijkstra.exe main.o heap.o hash.o graph.o
 
 main.o: main.cpp
@@ -24,7 +23,6 @@ export: clean
 
 clean:
 	rm -f *.exe *.o *.stackdump *~ *.zip out
-	touch out
 
 backup:
 	test -d backups || mkdir backups

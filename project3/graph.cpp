@@ -148,7 +148,8 @@ void Graph::runDijkstras(std::string &st){
 	heap unknownQueue = heap(vertexCount * 2);
 
 	int knownCount = 1;
-	while(knownCount < vertexCount){
+	bool emptyQueue = 0;
+	while(knownCount < vertexCount && !emptyQueue){
 		//	Grab edges from known vertex
 		//	Each key is focus dist (dist from s), plus cost to get there
 		for(Vertex::edge &e : focus->edges){
@@ -168,7 +169,9 @@ void Graph::runDijkstras(std::string &st){
 		while(focus->known){
 			std::string id;
 			if(unknownQueue.deleteMin(&id, nullptr, nullptr)){
-				break; //queue is empty, theres no path
+				//queue is empty, theres no path
+				emptyQueue = true;
+				break; 			
 			}
 			focus = getVertex(id);
 		}
@@ -186,7 +189,7 @@ void Graph::writeOutVBuf(std::string outfile_str){
 
 	for(auto &v : v_buf){ 
 		if(v.dist == -1 && !(v.known)){
-			outfile << v.name << ": NO PATH\n";
+			outfile << v.name <<": NO PATH\n";
 			continue;
 		}
 		

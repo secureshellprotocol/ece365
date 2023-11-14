@@ -11,8 +11,11 @@ int main(){
 	myGraph.buildGraph(infile_str);
 	
 	std::string focusVertex_str;
-	std::cout << "Enter name of starting vertex: ";
-	std::cin >> focusVertex_str;
+	while(!myGraph.withinGraph(focusVertex_str)){
+		std::cout << "Enter name of starting vertex: ";
+		std::cin >> focusVertex_str;
+	}
+
 
 	clock_t start = clock();
 	myGraph.runDijkstras(focusVertex_str);	
