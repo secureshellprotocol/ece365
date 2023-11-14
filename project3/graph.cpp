@@ -19,7 +19,6 @@
 //		Single, named vertex with no associated edges.
 Graph::Vertex::Vertex(std::string &n){
 	name = n;
-	edgeCount = 0;
 }
 
 //	Adds an edge to a vertex, with an associated cost
@@ -36,14 +35,13 @@ int Graph::Vertex::addEdge(Graph::Vertex &v, int c){
 	e.cost = c;
 
 	edges.push_back(e);
-	edgeCount++;
 
 	return 0;
 }
 
 //	Prints out Vertex info.
 void Graph::Vertex::printVertexInfo(){
-	std::cout << name << ' '<< edgeCount << std::endl;
+	std::cout << name << ' '<< edges.size() << std::endl;
 	for(auto &e : edges){
 		std::cout << '\t' << e.destination->name << ' ' << e.cost << std::endl;
 	} 
@@ -75,8 +73,6 @@ Graph::Vertex *Graph::addVertex(std::string &name){
 	
 		v_buf.push_back(v);	
 		verticeMap->insert(name, &(v_buf.back()));
-		
-		vertexCount++;
 	}
 
 	return getVertex(name);
@@ -88,7 +84,6 @@ Graph::Vertex *Graph::addVertex(std::string &name){
 
 Graph::Graph(){
 	verticeMap = new hashTable(100);
-	vertexCount = 0;
 }
 
 //	Builds graph from specifed graph file
@@ -145,11 +140,11 @@ void Graph::runDijkstras(std::string &st){
 	focus->dist = 0;
 	focus->known = true;
 
-	heap unknownQueue = heap(vertexCount * 2);
+	heap unknownQueue = heap(v_buf.size() + 1);
 
 	int knownCount = 1;
 	bool emptyQueue = 0;
-	while(knownCount < vertexCount && !emptyQueue){
+	while(knownCount < v_buf.size() && !emptyQueue){
 		//	Grab edges from known vertex
 		//	Each key is focus dist (dist from s), plus cost to get there
 		for(Vertex::edge &e : focus->edges){
@@ -187,15 +182,15 @@ void Graph::writeOutVBuf(std::string outfile_str){
 	std::ofstream outfile;
 	outfile.open(outfile_str);
 
-	for(auto &v : v_buf){ 
+	for(auto v : v_buf){ 
 		if(v.dist == -1 && !(v.known)){
 			outfile << v.name <<": NO PATH\n";
 			continue;
 		}
-		
-		Vertex *p = v.prev;
-		
+				
 		outfile << v.name << ": "<< v.dist <<" [";
+	
+		Vertex *p = v.prev;
 		std::string outbuf;
 		//	Iterate through prev's
 		while(p != nullptr){

@@ -27,7 +27,6 @@ private:
 			int cost;
 		} edge;
 
-		int edgeCount = 0;
 		std::list<edge> edges;
 		std::string name;
 
@@ -50,9 +49,6 @@ private:
 	
 	std::list<Vertex> v_buf;	//buffer for every vertice in graph to live
 	hashTable *verticeMap;		//map for accessing vertex in graph
-
-	//	Internal count for num of vertices in v_buf & verticeMap
-	int vertexCount = 0;
 
 	//	Getter for getting a vertex
 	//	Just here to handle the static_cast from null* to Vertex*
