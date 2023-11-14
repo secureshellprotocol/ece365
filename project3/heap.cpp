@@ -132,7 +132,7 @@ int heap::remove(std::string &id, int *key, void *ppData){
 		*key = rm->key;
 	}
 	if(ppData != nullptr){
-		ppData = rm->pData;
+		*(static_cast <void **> (ppData)) = rm->pData;
 	}
 	map->remove(id);
 
@@ -181,7 +181,7 @@ int heap::deleteMin(std::string *id, int *key, void *ppData){
 		*key = data[1].key;
 	}
 	if(ppData != nullptr){
-		ppData = (data[1].pData);
+		*(static_cast<void **> (ppData)) = data[1].pData;
 	}
 	return remove(data[1].id, key, ppData);
 }

@@ -26,10 +26,13 @@ Graph::Vertex::Vertex(std::string &n){
 //		1 if theres a vertex with the same name in the 
 //			edge list already 
 int Graph::Vertex::addEdge(Graph::Vertex &v, int c){
+	/*
 	for (auto &temp_edge : edges){
-		if(temp_edge.destination->name == v.name) { return 1; }
+		if(temp_edge.destination->name == v.name) { 
+			return 1; 
+		}
 	}
-
+	*/
 	edge e;
 	e.destination = &v;
 	e.cost = c;
@@ -150,7 +153,7 @@ void Graph::runDijkstras(std::string &st){
 		for(Vertex::edge &e : focus->edges){
 			if(e.destination->dist == -1 || e.destination->dist > e.cost + focus->dist){
 				e.destination->dist = e.cost + focus->dist;
-				e.destination->prev = getVertex(focus->name);
+				e.destination->prev = getVertex(focus->edge);
 			}
 			
 			//	Insert all edges from focus
@@ -162,13 +165,11 @@ void Graph::runDijkstras(std::string &st){
 		//	From unknownQueue, grabs the next dest
 		//	with the lowest attached dist.
 		while(focus->known){
-			std::string id;
-			if(unknownQueue.deleteMin(&id, nullptr, nullptr)){
+			if(unknownQueue.deleteMin(nullptr, nullptr, &focus)){
 				//queue is empty, theres no path
 				emptyQueue = true;
 				break; 			
 			}
-			focus = getVertex(id);
 		}
 		//	This next dest becomes known.
 		focus->known = true;
