@@ -1,31 +1,32 @@
+CXX      ?= g++
+CXXFLAGS += -g -Wall -Wextra -Wpedantic -std=c++11
+
+
+all: dijkstra.exe
+
+
 dijkstra.exe: main.o heap.o hash.o graph.o
-	g++ -o dijkstra.exe main.o heap.o hash.o graph.o
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 main.o: main.cpp
-	g++ -c main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
 
 graph.o: graph.cpp graph.h hash.cpp hash.h
-	g++ -c graph.cpp
+	$(CXX) $(CXXFLAGS) -c graph.cpp
 
 heap.o: heap.cpp heap.h
-	g++ -c heap.cpp
+	$(CXX) $(CXXFLAGS) -c heap.cpp
 
 hash.o: hash.cpp hash.h
-	g++ -c hash.cpp
+	$(CXX) $(CXXFLAGS) -c hash.cpp
 
 hard: clean dijkstra.exe
 
-debug:
-	g++ -g -o dijkstraDebug.exe main.cpp heap.cpp hash.cpp graph.cpp
-
+.PHONY: export
 export: clean
 	zip JR_Project3.zip *.cpp *.h Makefile
 
+.PHONY: clean
 clean:
-	rm -f *.exe *.o *.stackdump *~ *.zip out
-
-backup:
-	test -d backups || mkdir backups
-	cp *.cpp backups
-	cp *.h backups
-	cp Makefile backups
+	@rm -vf *.exe *.o *.stackdump *~ *.zip out
+	touch out
