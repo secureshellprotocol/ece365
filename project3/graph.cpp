@@ -19,34 +19,26 @@
 //		Single, named vertex with no associated edges.
 Graph::Vertex::Vertex(std::string &n){
 	name = n;
-	edgeCount = 0;
 }
 
 //	Adds an edge to a vertex, with an associated cost
-//		0 on success
-//		1 if theres a vertex with the same name in the 
-//			edge list already 
-int Graph::Vertex::addEdge(Graph::Vertex &v, int c){
-//	for (auto &temp_edge : edges){
-//		if(temp_edge.destination->name == v.name) { return 1; }
-//	}
-
+void Graph::Vertex::addEdge(Graph::Vertex &v, int c){
 	edge e;
 	e.destination = &v;
 	e.cost = c;
 
 	edges.push_back(e);
-	edgeCount++;
 
-	return 0;
+	return;
 }
 
 //	Prints out Vertex info.
 void Graph::Vertex::printVertexInfo(){
-	std::cout << name << ' '<< edgeCount << std::endl;
+	std::cout << name << ' '<< edges.size() << std::endl;
 	for(auto &e : edges){
 		std::cout << '\t' << e.destination->name << ' ' << e.cost << std::endl;
 	} 
+	
 	return;
 }
 
@@ -75,8 +67,6 @@ Graph::Vertex *Graph::addVertex(std::string &name){
 	
 		v_buf.push_back(v);	
 		verticeMap->insert(name, &(v_buf.back()));
-		
-		vertexCount++;
 	}
 
 	return getVertex(name);
@@ -86,18 +76,24 @@ Graph::Vertex *Graph::addVertex(std::string &name){
 //		PUBLIC
 //		------
 
+//	Builds a graph and an accompanying hash map for
+//	quick vertice access
 Graph::Graph(){
-	verticeMap = new hashTable(100);
-	vertexCount = 0;
+	verticeMap = new hashTable();
+}
+//Destructs graph and deletes hash table
+Graph::~Graph(){
+	delete verticeMap;
 }
 
 //	Builds graph from specifed graph file
+//
 //	Handles the format:
 //		<starting vertice name> <destination name> <cost>
 void Graph::buildGraph(std::string &filename) {
 	std::ifstream input(filename);
 	if(!input){
-		std::cerr << "Error: cannot access" << filename << std::endl;
+		std::cerr << "Error: cannot access " << filename << std::endl;
 		exit(1);
 	}
 	
@@ -123,7 +119,7 @@ void Graph::buildGraph(std::string &filename) {
 		std::string dest_str;
 		ss >> dest_str;
 
-		int cost;
+		unsigned int cost;
 		ss >> cost;
 		
 		//	Assemble verticies as specified
@@ -132,9 +128,9 @@ void Graph::buildGraph(std::string &filename) {
 		Vertex *focus = addVertex(focus_str);
 		Vertex *dest = addVertex(dest_str);
 		focus->addEdge(*dest, cost);
-		globalEdgeCount+=cost;
 	}
 	input.close();
+	
 	return;	
 }
 
@@ -144,47 +140,44 @@ void Graph::runDijkstras(std::string &st){
 	//	Establish known vertex
 	Vertex *focus = getVertex(st);
 	focus->dist = 0;
-	focus->known = true;
 
-	heap unknownQueue = heap(globalEdgeCount);
+	heap unknownQueue = heap(v_buf.size());
 
-	int knownCount = 1;
-	while(knownCount < vertexCount){
-		//	Grab edges from known vertex
-		//	Each key is focus dist (dist from s), plus cost to get there
-		for(Vertex::edge &e : focus->edges){
-			if(e.destination->dist == -1 || e.destination->dist > e.cost + focus->dist){
-				e.destination->dist = e.cost + focus->dist;
-				e.destination->prev = focus;
-			}
+	//	Insert every node into priority queue
+	for(Vertex &v : v_buf){
+		unknownQueue.insert(v.name, v.dist, &v);
+	}
+
+	while(!unknownQueue.deleteMin(nullptr, nullptr, &focus)){
+		if(focus->dist == INT_MAX) break; 	//	no path to next node
+	
+		//	loop through edges of focus
+		//	calcuate dist and update destination's dist if
+		//	calculated dist < current dist on destination
+		for(auto e : focus->edges){
+			unsigned int calculatedDist = focus->dist + e.cost;
 			
-			//	Insert all vertices from focus's edges
-			//	into unknownQueue
-			unknownQueue.insert(e.destination->name,
-								e.destination->dist,
-								e.destination);
-		}
-		//	From unknownQueue, grabs the next dest
-		//	with the lowest attached dist.
-		while(focus->known){
-			if(unknownQueue.deleteMin(nullptr, nullptr, &focus)){
-				break; //queue is empty, theres no path
+			if(calculatedDist < e.destination->dist){
+				e.destination->dist = calculatedDist;
+				e.destination->prev = focus;
+			
+				//Update position in heap
+				unknownQueue.setKey(e.destination->name, e.destination->dist);
 			}
 		}
-		//	This next dest becomes known.
-		focus->known = true;
-		knownCount++;
 	}
 
 	return;
 }
+
+//	Writes out vertice buffer to file
 void Graph::writeOutVBuf(std::string outfile_str){
 	//	Print output
 	std::ofstream outfile;
 	outfile.open(outfile_str);
 
 	for(auto &v : v_buf){ 
-		if(v.dist == -1 && !(v.known)){
+		if(v.dist == INT_MAX){
 			outfile << v.name << ": NO PATH\n";
 			continue;
 		}
@@ -193,6 +186,7 @@ void Graph::writeOutVBuf(std::string outfile_str){
 		
 		outfile << v.name << ": "<< v.dist <<" [";
 		std::string outbuf;
+
 		//	Iterate through prev's
 		while(p != nullptr){
 			std::string temp = p->name + ", ";

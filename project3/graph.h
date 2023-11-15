@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <climits>
 
 #include "hash.h"
 
@@ -23,25 +24,20 @@ private:
 	public:
 		typedef struct edge_t {
 			Vertex *destination;
-			int cost;
+			unsigned int cost;
 		} edge;
 
-		int edgeCount = 0;
 		std::list<edge> edges;
 		std::string name;
 
 		//Dijkstra's routines
-		bool known = false;
-		Vertex *prev = nullptr;
-		int dist = -1;
+		Vertex *prev = nullptr;			//Previous node in dijkstras path
+		unsigned int dist = INT_MAX;	//Distance from source vertex
 
 		Vertex(std::string &n);
 
 		//	Adds an edge to a vertex, with an associated cost
-		//		0 on success
-		//		1 if theres a vertex with the same name in the 
-		//			edge list already
-		int addEdge(Vertex &v, int cost);
+		void addEdge(Vertex &v, int cost);
 
 		//	Prints out Vertex info.
 		void printVertexInfo();
@@ -49,10 +45,6 @@ private:
 	
 	std::list<Vertex> v_buf;	//buffer for every vertice in graph to live
 	hashTable *verticeMap;		//map for accessing vertex in graph
-
-	//	Internal count for num of vertices in v_buf & verticeMap
-	int vertexCount = 0;
-	int globalEdgeCount = 0;
 
 	//	Getter for getting a vertex
 	//	Just here to handle the static_cast from null* to Vertex*
@@ -67,7 +59,11 @@ private:
 	Vertex *addVertex(std::string &name);
 
 public:
+	//	Builds a graph and an accompanyning hash map for
+	//	quick vertice access
 	Graph();
+	//	Destructs graph and deletes hash table
+	~Graph();
 
 	//	Builds graph from specifed graph file
 	//	
@@ -77,9 +73,12 @@ public:
 	//	This WILL define the single source of truth on what is and is not in
 	//	the graph. 
 	void buildGraph(std::string &filename);
-
+	
+	//	Runs Dijkstra's algorithm to determine the shortest path
+	//	from a given vertex, v
 	void runDijkstras(std::string &st);
-
+	
+	//	Writes out vertice buffer to file.
 	void writeOutVBuf(std::string outfile_str);
 	
 	//	Detects whether or not a vertex has been "seen" yet by the graph
