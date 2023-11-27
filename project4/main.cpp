@@ -36,8 +36,8 @@ int main(){
 	input >> mergeString;
 
 	while(!input.fail() || !input.eof()){
-		std::cout << A << '\n' << B << '\n' << mergeString << '\n';
-		std::cout << mergeMatch(A, B, mergeString) << '\n';
+		//std::cout << A << '\n' << B << '\n' << mergeString << '\n';
+		output << mergeMatch(A, B, mergeString) << '\n';
 
 		input >> A;
 		input >> B;
