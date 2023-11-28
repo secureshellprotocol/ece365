@@ -47,7 +47,7 @@ std::string mergeMatch(std::string A, std::string B, std::string C){
 
 	//	Analyze row 0
 	//	Analogous to doing only "left" comparisons
-	for(int i = 1; i < A.length(); i++){
+	for(int i = 1; i <= A.length(); i++){
 		if( A[i-1] == C[i-1] ){
 			weightMatrix[i][0] = weightMatrix[i-1][0] + 1;
 		}
@@ -84,15 +84,7 @@ std::string mergeMatch(std::string A, std::string B, std::string C){
 		}
 	}
 
-	//debug
-	/*
-	for(int j = 0; j <= B.length(); j++){
-		for(int i = 0; i <= A.length(); i++){
-			std::cout << weightMatrix[i][j];
-		}
-		std::cout << '\n';
-	}
-	*/
+
 
 	//	Can we step back?
 	if(weightMatrix[A.length()][B.length()] == -1){
@@ -129,6 +121,9 @@ std::string mergeMatch(std::string A, std::string B, std::string C){
 
 			continue;
 		}
+	
+		result = NAM;
+		return result;
 	}
 
 	return result;

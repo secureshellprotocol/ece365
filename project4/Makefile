@@ -1,5 +1,5 @@
 CXX      ?= g++
-CXXFLAGS += -g -Wall -Wextra -Wpedantic -std=c++11
+CXXFLAGS += -g -Wall -Wextra -Wpedantic -std=c++11 -Werror-implicit-function-declaration -fsanitize=undefined -fsanitize=address 
 
 
 all: merge.exe
@@ -19,7 +19,7 @@ hard: clean merge.exe
 
 .PHONY: export
 export: clean
-	zip JR_Project3.zip *.cpp *.h Makefile
+	zip JR_Project4.zip *.cpp *.h Makefile
 
 .PHONY: clean
 clean:
