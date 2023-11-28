@@ -38,16 +38,16 @@ std::string mergeMatch(std::string A, std::string B, std::string C){
 	}
 
 	//	initialize Row 0 and Column 0 with '-1'.
-	for(int i = 0; i <= A.length(); i++){
+	for(long unsigned int i = 0; i <= A.length(); i++){
 		weightMatrix[i][0] = -1;
 	}
-	for(int j = 0; j <= B.length(); j++){
+	for(long unsigned int j = 0; j <= B.length(); j++){
 		weightMatrix[0][j] = -1;
 	}
 
 	//	Analyze row 0
 	//	Analogous to doing only "left" comparisons
-	for(int i = 1; i <= A.length(); i++){
+	for(long unsigned int i = 1; i <= A.length(); i++){
 		if( A[i-1] == C[i-1] ){
 			weightMatrix[i][0] = weightMatrix[i-1][0] + 1;
 		}
@@ -55,7 +55,7 @@ std::string mergeMatch(std::string A, std::string B, std::string C){
 
 	//	Analyze col 0
 	//	Analogous to doing only "up" comparisons
-	for(int j = 1; j <= B.length(); j++){
+	for(long unsigned int j = 1; j <= B.length(); j++){
 		if( B[j-1] == C[j-1] ){
 			weightMatrix[0][j] = weightMatrix[0][j-1] + 1;
 		}
@@ -65,8 +65,8 @@ std::string mergeMatch(std::string A, std::string B, std::string C){
 	//	walk down every column and compute the weight
 	//	using "up" and "left" operations
 
-	for(int i = 1; i <= A.length(); i++){
-		for(int j = 1; j <= B.length(); j++){
+	for(long unsigned int i = 1; i <= A.length(); i++){
+		for(long unsigned int j = 1; j <= B.length(); j++){
 			
 			//left op
 			if( weightMatrix[i-1][j] != -1 && A[i - 1] == C[i + j - 1] ){
